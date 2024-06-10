@@ -1,29 +1,10 @@
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { StylesAtom, defaultValues } from "../../../Store/StylesAtom";
 import * as common from "../../../Style/Common/Common";
-
-export const defaultValues = {
-  fileConfig: {
-    file: "",
-    choiceFile: "useUrl",
-    matchTitle: "タイトル",
-    killPoint: 0,
-    rankPoint: "useRegularRankPoint",
-    contentWidth: 1920,
-    contentHight: 1080,
-  },
-  fonts: {
-    fontFamily: "'Noto Sans JP', sans-serif",
-    fontColor: "#000",
-    fontSize: 18,
-    useLanguage: "useJa",
-  },
-  decoration: {
-    borderSize: 0,
-    borderColor: "#000",
-    bgImg: [],
-  },
-};
+import { useRecoilValue } from "recoil";
+import Test from "../Function/Test";
 
 export default function Setting({ GiveData }) {
   const {
@@ -32,17 +13,20 @@ export default function Setting({ GiveData }) {
     formState: { errors },
   } = useForm({ defaultValues });
 
-  const testConsole = (data) => console.log(data);
-  const HandleData = (data) => GiveData(data);
+  //recoil
+
+  const [styles, setStyles] = useRecoilState(StylesAtom);
+
+  const HandleAtom = (data) => setStyles(data);
 
   return (
     <>
-      <FORM_STYLE onChange={handleSubmit(HandleData)}>
+      <FORM_STYLE onChange={handleSubmit(HandleAtom)}>
         <div>
-          <div>
+          <TITLE_STYLE>
             <img src="/img/icon_ex.png" alt="" />
             <p>ファイル設定</p>
-          </div>
+          </TITLE_STYLE>
           <INPUT_STYLE>
             <label htmlFor="choiceFile">ファイル</label>
             <select
@@ -53,6 +37,17 @@ export default function Setting({ GiveData }) {
               <option value="useUrl">URL</option>
               <option value="useFile">アップロード</option>
             </select>
+          </INPUT_STYLE>
+          <INPUT_STYLE>
+            <label htmlFor="file">
+              <input
+                id="file"
+                name="file"
+                type="file"
+                accept=".csv"
+                {...register("fileConfig.file")}
+              />
+            </label>
           </INPUT_STYLE>
           <INPUT_STYLE>
             <label htmlFor="matchTitle">タイトル</label>
@@ -136,10 +131,10 @@ export default function Setting({ GiveData }) {
         </div>
 
         <div>
-          <div>
+          <TITLE_STYLE>
             <img src="/img/icon_ex.png" alt="" />
             <p>テキスト設定</p>
-          </div>
+          </TITLE_STYLE>
           <INPUT_STYLE>
             <label htmlFor="fontFamily">フォント</label>
             <select
@@ -191,10 +186,10 @@ export default function Setting({ GiveData }) {
         </div>
 
         <div>
-          <div>
+          <TITLE_STYLE>
             <img src="/img/icon_ex.png" alt="" />
             <p>その他設定</p>
-          </div>
+          </TITLE_STYLE>
           <INPUT_STYLE>
             <label htmlFor="borderSize">区切り線のサイズ</label>
             <input
@@ -237,6 +232,16 @@ export default function Setting({ GiveData }) {
     </>
   );
 }
+
+const TITLE_STYLE = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+  img {
+    width: 1em;
+    height: 1em;
+  }
+`;
 
 const INPUT_STYLE = styled.div`
   margin: 1em 0;

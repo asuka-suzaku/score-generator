@@ -6,6 +6,7 @@ import "./App/Style/Common/reset.css";
 import styled from "styled-components";
 import * as common from "./App/Style/Common/Common";
 import Router from "./App/Route/Router";
+import { RecoilRoot } from "recoil";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,9 +22,11 @@ const GLOBAL_STYLE = styled.div`
 
 root.render(
   <React.StrictMode>
-    <GLOBAL_STYLE>
-      <Router />
-    </GLOBAL_STYLE>
+    <RecoilRoot>
+      <GLOBAL_STYLE>
+        <Router />
+      </GLOBAL_STYLE>
+    </RecoilRoot>
   </React.StrictMode>
 );
 
