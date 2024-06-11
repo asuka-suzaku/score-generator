@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { StylesAtom } from "../../../Store/StylesAtom";
 import Test from "../Function/Test";
 
 export default function Preview() {
   //背景画像の設定
-  const styles = useRecoilValue(StylesAtom);
+  const [styles, setStyles] = useRecoilState(StylesAtom);
 
   let image;
   const file = styles?.decoration?.bgImg[0];
@@ -37,18 +37,6 @@ export default function Preview() {
   if (csvFile) {
     Test(csvFile);
   }
-
-  // if (csvFile) {
-  //   const reader = new FileReader();
-  //   reader.onload = function (e) {
-  //     console.log(e);
-  //     const contents = e.target.result;
-  //     const lines = contents.split("\n");
-  //     const result = lines.map((line) => line.split(","));
-  //     // console.log(result);
-  //   };
-  //   reader.readAsText(csvFile);
-  // }
 
   //スタイルの設定
   const IS_STYLE = styled.div`

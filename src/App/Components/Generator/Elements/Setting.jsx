@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { StylesAtom, defaultValues } from "../../../Store/StylesAtom";
 import * as common from "../../../Style/Common/Common";
 import { useRecoilValue } from "recoil";
-import Test from "../Function/Test";
+import { pureJs } from "../Function/Test";
 
 export default function Setting({ GiveData }) {
   const {

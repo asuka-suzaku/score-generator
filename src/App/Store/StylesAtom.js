@@ -29,3 +29,8 @@ export const StylesAtom = atom({
   default: defaultValues,
   dangerouslyAllowMutability: true,
 });
+
+export const CsvAtom = atom({
+  key: "CsvAtom",
+  default: [],
+});
