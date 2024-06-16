@@ -7,6 +7,9 @@ export const defaultValues = {
     choiceFile: "useUrl",
     matchTitle: "タイトル",
     killPoint: 0,
+    howLong: 0,
+    regularRankPoint: 0,
+    irregularPoint: [],
     rankPoint: "useRegularRankPoint",
     contentWidth: 1920,
     contentHight: 1080,
@@ -30,7 +33,12 @@ export const StylesAtom = atom({
   dangerouslyAllowMutability: true,
 });
 
-export const CsvAtom = atom({
-  key: "CsvAtom",
+export const DataAtom = atom({
+  key: "DataAtom",
+  default: [],
+});
+
+export const ContentDataAtom = atom({
+  key: "ContentDataAtom",
   default: [],
 });

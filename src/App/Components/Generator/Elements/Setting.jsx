@@ -3,10 +3,9 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { StylesAtom, defaultValues } from "../../../Store/StylesAtom";
 import * as common from "../../../Style/Common/Common";
-import { useRecoilValue } from "recoil";
-import { pureJs } from "../Function/Test";
+import { CreateInput } from "../Function/Create/CreateInput";
 
-export default function Setting({ GiveData }) {
+export default function Setting() {
   const {
     register,
     handleSubmit,
@@ -19,6 +18,7 @@ export default function Setting({ GiveData }) {
 
   const HandleAtom = (data) => setStyles(data);
 
+  // console.log(styles.fileConfig.howLong)
   return (
     <>
       <FORM_STYLE onChange={handleSubmit(HandleAtom)}>
@@ -95,6 +95,48 @@ export default function Setting({ GiveData }) {
             </select>
           </INPUT_STYLE>
           <INPUT_STYLE>
+            <label htmlFor="killPoint">規則的な順位ポイント</label>
+            <input
+              type="number"
+              id="regularRankPoint"
+              name="regularRankPoint"
+              {...register("fileConfig.regularRankPoint", {
+                validate: (data) => {
+                  if (data < 0) {
+                    return "0以上に設定してください";
+                  }
+                },
+              })}
+            />
+            <div className="errorMsg">
+              {errors.fileConfig?.regularRankPoint?.message}
+            </div>
+          </INPUT_STYLE>
+          <div>
+            <INPUT_STYLE>
+              <label htmlFor="howLong">何位まで指定しますか</label>
+              <input
+                type="number"
+                name="howLong"
+                id="howLong"
+                {...register("fileConfig.howLong", {
+                  validate: (data) => {
+                    if (data < 0) {
+                      return "1以上にしてください";
+                    }
+                  },
+                })}
+              />
+              <div className="errorMsg">
+                {errors.fileConfig?.howLong?.message}
+              </div>
+            </INPUT_STYLE>
+
+            <div id="inputIrregular">
+              <CreateInput />
+            </div>
+          </div>
+          <INPUT_STYLE>
             <label htmlFor="contentWidth">出力する画像の横幅</label>
             <input
               type="number"
@@ -108,7 +150,7 @@ export default function Setting({ GiveData }) {
                 },
               })}
             />
-            <div className="errorMsg">{errors.fileConfig?.contentWidthZ}</div>
+            <div className="errorMsg">{errors.fileConfig?.contentWidth}</div>
           </INPUT_STYLE>
           <INPUT_STYLE>
             <label htmlFor="contentHight">出力する画像の縦幅</label>
@@ -243,7 +285,7 @@ const TITLE_STYLE = styled.div`
   }
 `;
 
-const INPUT_STYLE = styled.div`
+export const INPUT_STYLE = styled.div`
   margin: 1em 0;
   input {
     margin-left: 0.5em;
@@ -263,3 +305,7 @@ const FORM_STYLE = styled.form`
   display: flex;
   justify-content: space-around;
 `;
+
+{
+  /* <CreateInput /> */
+}

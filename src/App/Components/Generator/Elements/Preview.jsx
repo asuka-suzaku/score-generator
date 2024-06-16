@@ -1,12 +1,14 @@
-import { useCallback, useMemo } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { StylesAtom } from "../../../Store/StylesAtom";
-import Test from "../Function/Test";
+import { ContentDataAtom, StylesAtom } from "../../../Store/StylesAtom";
+import { CreateElement } from "../Function/Create/CreateTable";
+import { FileToCsv } from "../Function/FileToCsv";
 
 export default function Preview() {
   //背景画像の設定
   const [styles, setStyles] = useRecoilState(StylesAtom);
+  const setContentDataAtom = useSetRecoilState(ContentDataAtom);
 
   let image;
   const file = styles?.decoration?.bgImg[0];
@@ -33,10 +35,10 @@ export default function Preview() {
   //csvファイルの設定
 
   const csvFile = styles.fileConfig?.file[0];
-
-  if (csvFile) {
-    Test(csvFile);
-  }
+  // let CsvData = [];
+  // if (csvFile) {
+  //   FileToCsv(csvFile, setContentDataAtom);
+  // }
 
   //スタイルの設定
   const IS_STYLE = styled.div`
@@ -58,15 +60,24 @@ export default function Preview() {
     }
 
     th,
-    td:not(.last > td) {
+    td:not(tr:last-child > td) {
       border-bottom: solid ${styles?.decoration?.borderColor}
         ${styles?.decoration?.borderSize}px;
     }
   `;
 
+  const rankPointSystem = styles.fileConfig?.rankPoint
+    ? styles.fileConfig.rankPoint
+    : "useRegularRankPoint";
+
+  const killPoint = styles.fileConfig?.killPoint
+    ? styles.fileConfig.killPoint
+    : "0";
+
   let title = styles?.fileConfig?.matchTitle
     ? styles.fileConfig.matchTitle
     : "タイトル";
+
   return (
     <>
       <CONTENT_STYLE>
@@ -78,66 +89,14 @@ export default function Preview() {
             <TABLE_STYLE>
               <table>
                 <tbody>
-                  <tr>
-                    <th>{texts[lang]?.rankTitle}</th>
-                    <th>{texts[lang]?.teamNameTitle}</th>
-                    <th>{texts[lang]?.matchCountTitle}</th>
-                    <th>{texts[lang]?.matchCountTitle}</th>
-                    <th>{texts[lang]?.matchCountTitle}</th>
-                    <th>{texts[lang]?.killPointTitle}</th>
-                    <th>{texts[lang]?.totalTitle}</th>
-                  </tr>
-                  <tr>
-                    <td>1位</td>
-                    <td>チーム1</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <th>50</th>
-                    <td>350</td>
-                  </tr>
-                  <tr>
-                    <td>2位</td>
-                    <td>チーム2</td>
-                    <td>75</td>
-                    <td>75</td>
-                    <td>75</td>
-                    <td>40</td>
-                    <td>265</td>
-                  </tr>
-                  <tr>
-                    <td>3位</td>
-                    <td>チーム3</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>30</td>
-                    <td>180</td>
-                  </tr>
-                  <tr>
-                    <td>4位</td>
-                    <td>チーム4</td>
-                    <td>25</td>
-                    <td>25</td>
-                    <td>25</td>
-                    <td>20</td>
-                    <td>95</td>
-                  </tr>
-                  <tr className="last">
-                    <td>5位</td>
-                    <td>チーム5</td>
-                    <td>10</td>
-                    <td>10</td>
-                    <td>10</td>
-                    <td>10</td>
-                    <td>40</td>
-                  </tr>
+                  <CreateElement />
                 </tbody>
               </table>
             </TABLE_STYLE>
           </div>
         </IS_STYLE>
       </CONTENT_STYLE>
+      {/* <Link to="/generate">戻る</Link> */}
     </>
   );
 }
@@ -185,3 +144,11 @@ const texts = {
     killPointTitle: "キルポイント",
   },
 };
+
+// <th>{texts[lang]?.rankTitle}</th>
+//                     <th>{texts[lang]?.teamNameTitle}</th>
+//                     <th>{texts[lang]?.matchCountTitle}</th>
+//                     <th>{texts[lang]?.matchCountTitle}</th>
+//                     <th>{texts[lang]?.matchCountTitle}</th>
+//                     <th>{texts[lang]?.killPointTitle}</th>
+//                     <th>{texts[lang]?.totalTitle}</th>

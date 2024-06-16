@@ -5,7 +5,6 @@ import Preview from "./Elements/Preview";
 import Setting from "./Elements/Setting";
 import { defaultValues } from "../../Store/StylesAtom";
 import { Link } from "react-router-dom";
-import Test from "./Function/Test";
 
 export default function Generator() {
   const [styles, setStyles] = useState({ defaultValues });
@@ -16,13 +15,14 @@ export default function Generator() {
   return (
     <>
       <GENERATOR_STYLE>
-        <div className="content-width">
-          <div className="preview">
-            <Preview styles={styles} />
-          </div>
+        <div className="preview">
+          <Preview styles={styles} />
+        </div>
+        <div className="setting">
           <Setting GiveData={setStyles} />
         </div>
-        <Link to="/preview">ふるサイズ</Link>
+
+        {/* <Link to="/preview">ふるサイズ</Link> */}
       </GENERATOR_STYLE>
       <button>コンソール</button>
       <div id="text"></div>
@@ -30,14 +30,21 @@ export default function Generator() {
   );
 }
 
-const GENERATOR_STYLE = styled(BODY_STYLE)`
+const GENERATOR_STYLE = styled.div`
   margin-top: 6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .setting {
+    width: 1200px;
+  }
 
   .preview {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    place-content: center;
     overflow: scroll;
-    width: 1200px;
+    width: 100vw;
     height: 700px;
   }
 `;
