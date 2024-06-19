@@ -36,6 +36,7 @@ export function PushHeaderEn(data) {
           break;
         case "1":
           temporaryArray.push("TEAM");
+          break;
         case `${amount - 2}`:
           temporaryArray.push("KILL POINT");
           break;

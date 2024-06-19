@@ -14,7 +14,8 @@ export function CreateElement({ ex }) {
   const styles = useRecoilValue(StylesAtom);
   const tableData = useRecoilValue(ContentDataAtom);
   const irregularRankList = useRecoilValue(DataAtom);
-  const [contentData, setContentData] = useRecoilState(ContentDataAtom);
+  // const [contentData, setContentData] = useRecoilState(ContentDataAtom);
+  const [result, setResult] = useState([]);
 
   const csvFile = styles.fileConfig?.file[0];
   const killPoint = styles.fileConfig.killPoint;
@@ -49,58 +50,23 @@ export function CreateElement({ ex }) {
             const err = new Error("言語が選択されていません。");
             throw err;
         }
-        setContentData(finalData);
+        setResult(finalData);
       }
     };
     calc();
   }, [styles]);
 
-  if (contentData[0]) {
+  if (result[0]) {
     return (
       <>
-        <CreateTableElement data={contentData} />
+        <CreateTableElement data={result} />
       </>
     );
   } else {
     return (
-      <text id="message">
-        ファイルのアップロードかurlを貼り付けてください。
-      </text>
+      <p id="message">ファイルのアップロードかurlを貼り付けてください。</p>
     );
   }
-}
-
-function CreateTableHead({ data }) {
-  const amount = data[0].length;
-  const temporaryArray = [];
-  for (let i = 0; i < amount; i++) {
-    switch (i.toString()) {
-      case "0":
-        temporaryArray.push("チーム名");
-        break;
-      case `${amount - 2}`:
-        temporaryArray.push("キルポイント");
-        break;
-      case `${amount - 1}`:
-        temporaryArray.push("合計");
-        break;
-      default:
-        temporaryArray.push(`${i}試合目`);
-    }
-  }
-  return (
-    <>
-      <g viewBox="0,0,1920,1080" id="line-1" key="line-1">
-        <text id="1-1">順位</text>
-
-        {temporaryArray.map((elem, index) => (
-          <text id={`1-${index + 2}`} key={`1-${index + 2}`}>
-            {elem}
-          </text>
-        ))}
-      </g>
-    </>
-  );
 }
 
 function CreateTableElement({ data }) {
@@ -112,19 +78,59 @@ function CreateTableElement({ data }) {
 
   return (
     <>
-      {temporaryArray.map((index) => (
-        <g id={`line-${Number(index) + 1}`} key={`line-${Number(index) + 1}`}>
-          {data[index].map((elem, elemIndex) => (
-            <text
-              id={`${Number(index) + 1}-${elemIndex + 1}`}
-              key={`${index + 1}-${elemIndex + 1}`}
+      <table>
+        <tbody>
+          {temporaryArray.map((index) => (
+            <tr
+              id={`line-${Number(index) + 1}`}
+              key={`line-${Number(index) + 1}`}
             >
-              {elem}
-            </text>
+              {data[index].map((elem, elemIndex) => (
+                <td
+                  id={`${Number(index) + 1}-${elemIndex + 1}`}
+                  key={`${index + 1}-${elemIndex + 1}`}
+                >
+                  {elem}
+                </td>
+              ))}
+            </tr>
           ))}
-          <line x1="0" y1="0" x2="0" y2="0" stroke="#000" />
-        </g>
-      ))}
+        </tbody>
+      </table>
+      <p id="mark">GENERATE BY SCORE GENERATOR</p>
     </>
   );
 }
+
+// function CreateTableHead({ data }) {
+//   const amount = data[0].length;
+//   const temporaryArray = [];
+//   for (let i = 0; i < amount; i++) {
+//     switch (i.toString()) {
+//       case "0":
+//         temporaryArray.push("チーム名");
+//         break;
+//       case `${amount - 2}`:
+//         temporaryArray.push("キルポイント");
+//         break;
+//       case `${amount - 1}`:
+//         temporaryArray.push("合計");
+//         break;
+//       default:
+//         temporaryArray.push(`${i}試合目`);
+//     }
+//   }
+//   return (
+//     <>
+//       <g viewBox="0,0,1920,1080" id="line-1" key="line-1">
+//         <text id="1-1">順位</text>
+
+//         {temporaryArray.map((elem, index) => (
+//           <text id={`1-${index + 2}`} key={`1-${index + 2}`}>
+//             {elem}
+//           </text>
+//         ))}
+//       </g>
+//     </>
+//   );
+// }

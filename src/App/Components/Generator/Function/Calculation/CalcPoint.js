@@ -6,6 +6,7 @@ export async function CalcPoint(
   irregularRankList,
   useLanguage
 ) {
+  console.log("calcPoint");
   const CSV_DATA = [];
 
   //データを書き換えのためコピー
