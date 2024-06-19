@@ -3,7 +3,8 @@ export async function CalcPoint(
   usePointSystem,
   killPoint,
   rankPoint,
-  irregularRankList
+  irregularRankList,
+  useLanguage
 ) {
   const CSV_DATA = [];
 
@@ -40,15 +41,43 @@ export async function CalcPoint(
 
   await CalcSort(CSV_DATA);
 
+  switch (useLanguage) {
+    case "useJa":
+      PushRankJa(CSV_DATA);
+      break;
+    case "useEn":
+      PushRankEn(CSV_DATA);
+      break;
+    default:
+      const err = new Error("言語が選択されていません。");
+      throw err;
+  }
   return CSV_DATA;
 }
 
 // CalcPoint(testCsv1, rankPointSystem, killPoint, matchPoint);
 
+function PushRankJa(funcInData) {
+  return new Promise((resolve) => {
+    for (let i = 0; i < funcInData.length; i++) {
+      funcInData[i].unshift(`${i + 1}位`);
+      resolve(funcInData);
+    }
+  });
+}
+
+function PushRankEn(funcInData) {
+  return new Promise((resolve) => {
+    for (let i = 0; i < funcInData.length; i++) {
+      funcInData[i].unshift(`NO.${i + 1}`);
+      resolve(funcInData);
+    }
+  });
+}
+
 //並べ替えの関数
 function CalcSort(funcInData) {
   const len = funcInData[0].length;
-  console.log(funcInData[0][len - 1]);
   return new Promise((resolve) => {
     funcInData.sort((a, b) => {
       return b[len - 1] - a[len - 1];

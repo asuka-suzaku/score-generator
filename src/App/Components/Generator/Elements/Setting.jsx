@@ -144,13 +144,15 @@ export default function Setting() {
               id="contentWidth"
               {...register("fileConfig.contentWidth", {
                 validate: (data) => {
-                  if (data < 1) {
+                  if (data < 2) {
                     return "1以上にしてください";
                   }
                 },
               })}
             />
-            <div className="errorMsg">{errors.fileConfig?.contentWidth}</div>
+            <div className="errorMsg">
+              {errors.fileConfig?.contentWidth?.message}
+            </div>
           </INPUT_STYLE>
           <INPUT_STYLE>
             <label htmlFor="contentHight">出力する画像の縦幅</label>
@@ -160,7 +162,7 @@ export default function Setting() {
               id="contentHight"
               {...register("fileConfig.contentHight", {
                 validate: (data) => {
-                  if (data < 1) {
+                  if (data < 2) {
                     return "1以上にしてください";
                   }
                 },

@@ -12,8 +12,6 @@ export function CreateInput() {
     let push = i.toString();
     ary.push(push);
   }
-  console.log(data);
-
   return (
     <>
       {ary.map((index) => (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import {
   ContentDataAtom,
@@ -8,48 +8,65 @@ import {
 } from "../../../../Store/StylesAtom";
 import { CalcPoint } from "../Calculation/CalcPoint";
 import { FileToCsv } from "../FileToCsv";
+import { PushHeaderEn, PushHeaderJa } from "../Calculation/PushHeader";
 
-export function CreateElement() {
+export function CreateElement({ ex }) {
   const styles = useRecoilValue(StylesAtom);
   const tableData = useRecoilValue(ContentDataAtom);
   const irregularRankList = useRecoilValue(DataAtom);
-  const setContentData = useSetRecoilState(ContentDataAtom);
-  const [result, setResult] = useState([]);
+  const [contentData, setContentData] = useRecoilState(ContentDataAtom);
 
   const csvFile = styles.fileConfig?.file[0];
   const killPoint = styles.fileConfig.killPoint;
   const rankPointSystem = styles.fileConfig.rankPoint;
   const matchPoint = styles.fileConfig.regularRankPoint;
+  const useLanguage = styles.fonts.useLanguage;
 
   useEffect(() => {
     const calc = async () => {
       let CsvData;
       if (csvFile) {
         CsvData = await FileToCsv(csvFile);
-        console.log(CsvData);
 
         const calc = await CalcPoint(
           CsvData,
           rankPointSystem,
           killPoint,
           matchPoint,
-          irregularRankList
+          irregularRankList,
+          useLanguage
         );
-        setResult(calc);
+
+        let finalData = [];
+        switch (useLanguage) {
+          case "useJa":
+            finalData = await PushHeaderJa(calc);
+            break;
+          case "useEn":
+            finalData = await PushHeaderEn(calc);
+            break;
+          default:
+            const err = new Error("言語が選択されていません。");
+            throw err;
+        }
+        setContentData(finalData);
       }
     };
     calc();
-  }, []);
+  }, [styles]);
 
-  if (result[0]) {
+  if (contentData[0]) {
     return (
       <>
-        <CreateTableHead data={result} />
-        <CreateTableElement data={result} />
+        <CreateTableElement data={contentData} />
       </>
     );
   } else {
-    return <div>ファイルのアップロードかurlを貼り付けてください。</div>;
+    return (
+      <text id="message">
+        ファイルのアップロードかurlを貼り付けてください。
+      </text>
+    );
   }
 }
 
@@ -73,15 +90,15 @@ function CreateTableHead({ data }) {
   }
   return (
     <>
-      <tr>
-        <th>順位</th>
+      <g viewBox="0,0,1920,1080" id="line-1" key="line-1">
+        <text id="1-1">順位</text>
 
         {temporaryArray.map((elem, index) => (
-          <th id={`head-${index}`} key={`head-${index}`}>
+          <text id={`1-${index + 2}`} key={`1-${index + 2}`}>
             {elem}
-          </th>
+          </text>
         ))}
-      </tr>
+      </g>
     </>
   );
 }
@@ -96,19 +113,17 @@ function CreateTableElement({ data }) {
   return (
     <>
       {temporaryArray.map((index) => (
-        <tr id={`line-${Number(index) + 1}`} key={`line-${Number(index) + 1}`}>
-          <td key={`${index}-1`} id={`${index}-1`}>
-            {Number(index) + 1}位
-          </td>
+        <g id={`line-${Number(index) + 1}`} key={`line-${Number(index) + 1}`}>
           {data[index].map((elem, elemIndex) => (
-            <td
-              id={`${Number(index) + 1}-${elemIndex + 2}`}
-              key={`${index}-${elemIndex}`}
+            <text
+              id={`${Number(index) + 1}-${elemIndex + 1}`}
+              key={`${index + 1}-${elemIndex + 1}`}
             >
               {elem}
-            </td>
+            </text>
           ))}
-        </tr>
+          <line x1="0" y1="0" x2="0" y2="0" stroke="#000" />
+        </g>
       ))}
     </>
   );

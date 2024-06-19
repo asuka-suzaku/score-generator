@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { BODY_STYLE } from "../Body/Body";
 import Preview from "./Elements/Preview";
 import Setting from "./Elements/Setting";
-import { defaultValues } from "../../Store/StylesAtom";
+import { defaultValues, StylesAtom } from "../../Store/StylesAtom";
 import { Link } from "react-router-dom";
+import { DomToImage } from "./Function/GenerateImage";
+import { DomToSvg } from "./Function/DomToSvg";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function Generator() {
-  const [styles, setStyles] = useState({ defaultValues });
+  const [styles, setStyles] = useRecoilState(StylesAtom);
 
   // const handle = () => {
   //   Test();
@@ -16,22 +19,26 @@ export default function Generator() {
     <>
       <GENERATOR_STYLE>
         <div className="preview">
-          <Preview styles={styles} />
+          <Preview />
         </div>
         <div className="setting">
-          <Setting GiveData={setStyles} />
+          <Setting />
         </div>
 
-        {/* <Link to="/preview">ふるサイズ</Link> */}
+        <Link to="/preview">ふるサイズ</Link>
       </GENERATOR_STYLE>
-      <button>コンソール</button>
+      <button type="button">コンソール</button>
       <div id="text"></div>
     </>
   );
 }
 
+function Console() {
+  console.log(document.getElementById("element"));
+}
+
 const GENERATOR_STYLE = styled.div`
-  margin-top: 6em;
+  margin-top: 10em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,6 +52,6 @@ const GENERATOR_STYLE = styled.div`
     place-content: center;
     overflow: scroll;
     width: 100vw;
-    height: 700px;
+    height: 800px;
   }
 `;
