@@ -1,4 +1,39 @@
-export async function CalcPoint(
+const exampleObj = {
+  values: [
+    [
+      "チーム名",
+      "1試合目の順位",
+      "1試合目のキル数",
+      "2試合目の順位",
+      "2試合目のキル数",
+      "3試合目の順位",
+      "3試合目のキル数",
+    ],
+    ["チーム1", "1", "1", "1", "1", "1", "1"],
+    ["チーム2", "2", "2", "2", "2", "2", "2"],
+    ["チーム3", "3", "3", "3", "3", "3", "3"],
+    ["チーム4", "4", "4", "4", "4", "4", "4"],
+    ["チーム5", "5", "5", "5", "5", "5", "5"],
+    ["チーム6", "6", "6", "6", "6", "6", "6"],
+    ["チーム7", "7", "7", "7", "7", "7", "7"],
+    ["チーム8", "8", "8", "8", "8", "8", "8"],
+    ["チーム9", "9", "9", "9", "9", "9", "9"],
+    ["チーム10", "10", "10", "10", "10", "10", "10"],
+  ],
+};
+
+function ConvertToArray() {
+  const data = exampleObj.values;
+  const func = async () => {
+    const test = await CalcPoint(data, "useRegularRankPoint", 2, 2, 0, "useJa");
+    console.log(test);
+  };
+  func();
+}
+
+ConvertToArray();
+
+async function CalcPoint(
   data,
   usePointSystem,
   killPoint,
@@ -6,6 +41,7 @@ export async function CalcPoint(
   irregularRankList,
   useLanguage
 ) {
+  console.log("calcPoint");
   const CSV_DATA = [];
 
   //データを書き換えのためコピー
@@ -164,6 +200,7 @@ function CalcRegularRankPoint(funcInData, rankPoint, teamNum) {
         if (i % 2 === 1) {
           let rank = Number(temporaryArray[i]);
           //ポイント＝設定したマッチポイント×チーム数ー順位
+
           let mainPoint = rankPoint * (teamNum - rank);
           let push = mainPoint.toString();
           funcInData[x][i] = push;

@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ContentDataAtom, StylesAtom } from "../../../Store/StylesAtom";
+import { StylesAtom } from "../../../Store/StylesAtom";
 import { CreateElement } from "../Function/Create/CreateTable";
 import { FileToCsv } from "../Function/FileToCsv";
 import React, { useEffect } from "react";
 import { DomToSvg } from "../Function/DomToSvg";
 import { CssLike } from "../Function/Calculation/CssLike";
+import { StyleSheetManager } from "styled-components";
+import isPropValid from "@emotion/is-prop-valid";
 
 export default function Preview() {
   //背景画像の設定
   const [styles, setStyles] = useRecoilState(StylesAtom);
-  const contentData = useRecoilValue(ContentDataAtom);
   let image;
   const file = styles?.decoration?.bgImg[0];
 
@@ -34,31 +35,15 @@ export default function Preview() {
     }
   }
 
-  //スタイルの設定
-  const IS_STYLE = styled.div`
-    color: ${styles?.fonts?.fontColor};
-    width: ${styles?.fileConfig?.contentWidth}px;
-    height: ${styles?.fileConfig?.contentHight}px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url(${image});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: lighten;
-
-    th,
-    td {
-      font-size: ${styles?.fonts?.fontSize}px;
-    }
-
-    th,
-    td:not(tr:last-child > td) {
-      border-bottom: solid ${styles?.decoration?.borderColor}
-        ${styles?.decoration?.borderSize}px;
-    }
-  `;
+  const them = {
+    fontColor: styles.fonts.fontColor,
+    fontSize: styles.fonts.fontSize,
+    width: styles.fileConfig.contentWidth,
+    hight: styles.fileConfig.contentHight,
+    imageURL: image,
+    borderColor: styles.decoration.borderColor,
+    borderSize: styles.decoration.borderSize,
+  };
 
   let title = styles?.fileConfig?.matchTitle
     ? styles.fileConfig.matchTitle
@@ -69,7 +54,18 @@ export default function Preview() {
   return (
     <>
       <CONTENT_STYLE id="CreateImg">
-        <IS_STYLE>
+        {them.imageURL ? (
+          <img
+            src={`${them.imageURL}`}
+            crossorigin="anonymous"
+            className="bg-img"
+          />
+        ) : (
+          ""
+        )}
+
+        {/* <BG $img={`url(${them.imageURL})`}> */}
+        <IS_STYLE className="main-table" $stylesData={them}>
           <div className="content-wrap">
             <TITLE_STYLE>
               <p>{title}</p>
@@ -79,11 +75,38 @@ export default function Preview() {
             </TABLE_STYLE>
           </div>
         </IS_STYLE>
+        {/* </BG> */}
       </CONTENT_STYLE>
-      {/* <Link to="/generate">戻る</Link> */}
     </>
   );
 }
+
+const BG = styled.div`
+  background-image: ${(props) => props.$img};
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`;
+
+const IS_STYLE = styled.div`
+  color: ${(props) => props.$stylesData.fontColor};
+  width: ${(props) => props.$stylesData.width}px;
+  height: ${(props) => props.$stylesData.hight}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  th,
+  td {
+    font-size: ${(props) => props.$stylesData.fontSize}px;
+  }
+
+  th,
+  td:not(tr:last-child > td) {
+    border-bottom: solid ${(props) => props.$stylesData.borderColor}
+      ${(props) => props.$stylesData.borderSize}px;
+  }
+`;
 
 const CONTENT_STYLE = styled.div`
   display: flex;
@@ -91,7 +114,17 @@ const CONTENT_STYLE = styled.div`
   white-space: nowrap;
   background-color: #fff;
   position: relative;
-  width: fit-content;
+
+  .main-table {
+    z-index: 3;
+  }
+
+  .bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 `;
 
 const TITLE_STYLE = styled.div`
@@ -99,10 +132,12 @@ const TITLE_STYLE = styled.div`
   margin: 2em;
   display: flex;
   justify-content: center;
+  position: relative;
 `;
 
 const TABLE_STYLE = styled.div`
-  z-index: 99;
+  position: relative;
+  z-index: 30;
   th,
   td {
     padding: 1em 2em;
@@ -115,60 +150,3 @@ const TABLE_STYLE = styled.div`
     margin-top: 3em;
   }
 `;
-
-const texts = {
-  English: {
-    rankTitle: "RANK",
-    teamNameTitle: "TEAM NAME",
-    matchCountTitle: "NO.",
-    totalTitle: "TOTAL",
-    killPointTitle: "KILL POINTS",
-  },
-
-  Japanese: {
-    rankTitle: "順位",
-    teamNameTitle: "チーム名",
-    matchCountTitle: "試合目",
-    totalTitle: "合計",
-    killPointTitle: "キルポイント",
-  },
-};
-
-// <th>{texts[lang]?.rankTitle}</th>
-//                     <th>{texts[lang]?.teamNameTitle}</th>
-//                     <th>{texts[lang]?.matchCountTitle}</th>
-//                     <th>{texts[lang]?.matchCountTitle}</th>
-//                     <th>{texts[lang]?.matchCountTitle}</th>
-//                     <th>{texts[lang]?.killPointTitle}</th>
-//                     <th>{texts[lang]?.totalTitle}</th>
-
-// let CsvData = [];
-// if (csvFile) {
-//   FileToCsv(csvFile, setContentDataAtom);
-// }
-
-//スタイルの設定
-// const IS_STYLE = styled.svg`
-//   color: ${styles?.fonts?.fontColor};
-//   width: ${styles?.fileConfig?.contentWidth}px;
-//   height: ${styles?.fileConfig?.contentHight}px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-image: url(${image});
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   background-size: cover;
-//   background-blend-mode: lighten;
-
-//   th,
-//   td {
-//     font-size: ${styles?.fonts?.fontSize}px;
-//   }
-
-//   th,
-//   td:not(tr:last-child > td) {
-//     border-bottom: solid ${styles?.decoration?.borderColor}
-//       ${styles?.decoration?.borderSize}px;
-//   }
-// `;

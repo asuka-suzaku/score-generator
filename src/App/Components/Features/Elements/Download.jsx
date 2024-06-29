@@ -15,6 +15,9 @@ export default function Download() {
 
 const DOWNLOAD_MSG = styled.p`
   color: ${common.HIGHT_LIGHT_COLOR};
+  @media screen and (max-width: 500px) {
+    margin: 0 1em;
+  }
 `;
 
 const DOWNLOAD_STYLE = styled.div`

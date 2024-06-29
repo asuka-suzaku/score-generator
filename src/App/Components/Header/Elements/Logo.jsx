@@ -26,4 +26,12 @@ const LOGO_STYLE = styled.div`
     font-size: 24px;
     letter-spacing: 0;
   }
+
+  @media screen and (max-width: 500px) {
+    img {
+      display: none;
+    }
+
+    padding-left: 1em;
+  }
 `;

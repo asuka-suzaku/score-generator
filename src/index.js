@@ -18,6 +18,22 @@ const GLOBAL_STYLE = styled.div`
   font-weight: ${common.MAIN_FONT_WIGHT};
   color: ${common.FONT_COLOR};
   line-height: 1.3em;
+
+  main {
+    position: relative;
+    @media screen and (min-width: 1200px) {
+      .nav-component {
+        display: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .nav-component:not(.header > .nav-component) {
+      display: none;
+      height: 100vh;
+    }
+  }
 `;
 
 root.render(

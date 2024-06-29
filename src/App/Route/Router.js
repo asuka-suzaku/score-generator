@@ -17,7 +17,7 @@ export default function Router() {
         <Route path="" element={<Body />} />
         <Route index element={<Body />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="generate" element={<Generator />} />
+        <Route path="generator" element={<Generator />} />
         <Route path="/preview" element={<Preview />} />
       </Route>
     )

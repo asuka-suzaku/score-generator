@@ -8,4 +8,8 @@ export const BUTTON = styled.a`
   border-radius: 13em;
   margin: 2em 0;
   text-decoration: none;
+
+  @media screen and (max-width: 500px) {
+    padding: 1em 3em;
+  }
 `;

@@ -1,75 +1,116 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { BODY_STYLE } from "../Body/Body";
 import Preview from "./Elements/Preview";
 import Setting from "./Elements/Setting";
-import { defaultValues, StylesAtom } from "../../Store/StylesAtom";
-import { Link } from "react-router-dom";
-import { DomToImage } from "./Function/GenerateImage";
-import { DomToSvg } from "./Function/DomToSvg";
+import { MenuAtom, StylesAtom, ToggleAtom } from "../../Store/StylesAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { BUTTON } from "../../Style/Common/Button";
 import * as common from "../../Style/Common/Common";
 import { CreateImage } from "./Function/Create/CreateImage";
+import Navigation from "../Header/Elements/Navigation";
+import Footer from "../Footer/Footer";
 
 export default function Generator() {
   const [styles, setStyles] = useRecoilState(StylesAtom);
   const width = styles.fileConfig.contentWidth;
   const hight = styles.fileConfig.contentHight;
+  const [toggle, setToggle] = useRecoilState(ToggleAtom);
+  const menu = useRecoilValue(MenuAtom);
+
+  const handleToggle = () => {
+    if (toggle == "block") {
+      setToggle("none");
+    } else {
+      setToggle("block");
+    }
+  };
 
   // const handle = () => {
   //   Test();
   // };
   return (
     <>
-      <GENERATOR_STYLE>
+      <Navigation menu={menu} />
+      <GENERATOR_STYLE $toggle={toggle}>
         <div className="preview">
           <Preview />
         </div>
-        <div className="setting">
+        <div className="setting pre">
           <Setting />
         </div>
 
-        <Link to="/preview">ふるサイズ</Link>
-        <div className="export">
+        {toggle === "block" ? (
+          <div id="fullPreviewIn" className="view" onClick={handleToggle}>
+            フルサイズ
+          </div>
+        ) : (
+          <div id="fullPreviewOut" className="view" onClick={handleToggle}>
+            設定画面へ戻る
+          </div>
+        )}
+        <div className="export pre">
           <EXPORT type="button" onClick={() => CreateImage(width, hight)}>
             出力
           </EXPORT>
-          <div id="exportButton"></div>
         </div>
       </GENERATOR_STYLE>
+      <Footer />
     </>
   );
 }
 
-const EXPORT = styled.button`
+const EXPORT = styled.p`
   background-color: ${common.HIGHT_LIGHT_COLOR};
   color: ${common.MAIN_COLOR};
   padding: 1em 6.5em;
   border-radius: 13em;
   margin: 2em 0;
   text-decoration: none;
+
+  @media screen and (max-width: 500px) {
+    padding: 1em 3em;
+  }
 `;
 
-function Console() {
-  console.log(document.getElementById("element"));
-}
+const GENERATOR_STYLE = styled.main`
+  z-index: 2;
+  .pre {
+    display: ${(props) => props.$toggle};
+  }
 
-const GENERATOR_STYLE = styled.div`
-  margin-top: 10em;
+  .view {
+    padding: 1em 6.5em;
+    border-radius: 13em;
+    margin: 2em 0;
+    background-color: ${common.HIGHT_LIGHT_COLOR};
+    color: ${common.MAIN_COLOR};
+    @media screen and (max-width: 500px) {
+      padding: 1em 3em;
+    }
+  }
+
+  margin-top: ${(props) => (props.$toggle === "block" ? "10em" : "0")};
   display: flex;
   flex-direction: column;
   align-items: center;
 
   .setting {
-    width: 1200px;
+    max-width: 1200px;
   }
 
   .preview {
     display: grid;
     place-content: center;
     overflow: scroll;
-    width: 100vw;
-    height: 800px;
+    width: ${(props) => (props.$toggle === "block" ? "100vw" : "100vw")};
+    height: ${(props) => (props.$toggle === "block" ? "800px" : "100vh")};
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 500px) {
+    .view {
+      padding: 1em 3em;
+    }
   }
 `;

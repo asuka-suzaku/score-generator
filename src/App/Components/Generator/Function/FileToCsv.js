@@ -1,6 +1,3 @@
-import { useSetRecoilState } from "recoil";
-import { ContentDataAtom } from "../../../Store/StylesAtom";
-
 export function FileToCsv(file, setData) {
   return new Promise((resolve) => {
     const reader = new FileReader();

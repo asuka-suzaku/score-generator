@@ -1,21 +1,27 @@
-import HowTo from "../HowTo/HowTo";
 import Header from "../Header/Header";
 import MainVisual from "./MainVisual";
 import styled from "styled-components";
 import Generate from "../Generate/Generate";
+import Navigation from "../Header/Elements/Navigation";
+import { useRecoilValue } from "recoil";
+import { MenuAtom } from "../../Store/StylesAtom";
+import Features from "../Features/Features";
+import Footer from "../Footer/Footer";
 
 export default function Body() {
+  const menu = useRecoilValue(MenuAtom);
   return (
     <>
       <main>
-        <Header />
-        <MainVisual />
-        <BODY_STYLE>
+        <Navigation menu={menu} />
+        <MainVisual id="top" />
+        <BODY_STYLE $menu={menu}>
           <div className="content-width">
-            <HowTo />
-            <Generate />
+            <Features />
+            <Generate id="generate" />
           </div>
         </BODY_STYLE>
+        <Footer />
       </main>
     </>
   );

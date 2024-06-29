@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import * as common from "../../../Style/Common/Common";
 
-export default function HowToStep() {
+export default function FeaturesStep() {
   return (
     <>
-      <HOW_TO_SUMMARY_STYLE>
-        <HOW_TO_SUMMARY_STYLE_CONTENT>
+      <FEATURES_SUMMARY_STYLE>
+        <FEATURES_SUMMARY_STYLE_CONTENT>
           <img src="/img/step_ex.png" alt="" />
           <h4>step1</h4>
           <p>
@@ -13,8 +13,8 @@ export default function HowToStep() {
             <br />
             ダウンロード
           </p>
-        </HOW_TO_SUMMARY_STYLE_CONTENT>
-        <HOW_TO_SUMMARY_STYLE_CONTENT>
+        </FEATURES_SUMMARY_STYLE_CONTENT>
+        <FEATURES_SUMMARY_STYLE_CONTENT>
           <img src="/img/step_ex.png" alt="" />
           <h4>step2</h4>
           <p>
@@ -22,29 +22,38 @@ export default function HowToStep() {
             <br />
             ポイントを入力
           </p>
-        </HOW_TO_SUMMARY_STYLE_CONTENT>
-        <HOW_TO_SUMMARY_STYLE_CONTENT>
+        </FEATURES_SUMMARY_STYLE_CONTENT>
+        <FEATURES_SUMMARY_STYLE_CONTENT>
           <img src="/img/step_ex.png" alt="" />
           <h4>step3</h4>
           <p>ファイルをアップロード</p>
-        </HOW_TO_SUMMARY_STYLE_CONTENT>
-        <HOW_TO_SUMMARY_STYLE_CONTENT>
+        </FEATURES_SUMMARY_STYLE_CONTENT>
+        <FEATURES_SUMMARY_STYLE_CONTENT>
           <img src="/img/step_ex.png" alt="" />
           <h4>step4</h4>
           <p>デザインの設定</p>
-        </HOW_TO_SUMMARY_STYLE_CONTENT>
-      </HOW_TO_SUMMARY_STYLE>
+        </FEATURES_SUMMARY_STYLE_CONTENT>
+      </FEATURES_SUMMARY_STYLE>
     </>
   );
 }
 
-const HOW_TO_SUMMARY_STYLE = styled.div`
+const FEATURES_SUMMARY_STYLE = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 3em;
+  @media screen and (max-width: 1200px) {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 1200px) {
+    margin: 0 0.5em;
+  }
 `;
 
-const HOW_TO_SUMMARY_STYLE_CONTENT = styled.div`
+const FEATURES_SUMMARY_STYLE_CONTENT = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,5 +69,14 @@ const HOW_TO_SUMMARY_STYLE_CONTENT = styled.div`
   h4 {
     margin: 18px 0;
     font-weight: ${common.BOLD_FONT_WIGHT};
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    margin: 3em 0;
+  }
+
+  @media screen and (max-width: 800px) {
+    margin: 3em 0;
   }
 `;
