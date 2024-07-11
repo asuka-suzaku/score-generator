@@ -2,11 +2,11 @@ const FONT_COLOR = "#20232A";
 const MAIN_COLOR = "#F4F4EF";
 const HIGHT_LIGHT_COLOR = "#A01D26";
 const SUB_COLOR = "#D1DAD7";
-const MAIN_FONT_SIZE = 18;
-const SECTION_TITLE_FONT_SIZE = 21;
+const MAIN_FONT_SIZE = 16;
+const SECTION_TITLE_FONT_SIZE = 18;
 const MAIN_FONT_FAMILY = "'Noto Sans JP', sans-serif";
 const MAIN_FONT_WIGHT = 400;
-const BOLD_FONT_WIGHT = 500;
+const BOLD_FONT_WIGHT = 600;
 
 export {
   FONT_COLOR,

@@ -5,8 +5,8 @@ import reportWebVitals from "./reportWebVitals";
 import "./App/Style/Common/reset.css";
 import styled from "styled-components";
 import * as common from "./App/Style/Common/Common";
-import Router from "./App/Route/Router";
 import { RecoilRoot } from "recoil";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,15 +21,20 @@ const GLOBAL_STYLE = styled.div`
 
   main {
     position: relative;
+    .errorPageMessage {
+      display: none;
+    }
     @media screen and (min-width: 1200px) {
-      .nav-component {
+      .nav-component,
+      .errorPageMessage {
         display: none;
       }
     }
   }
 
   @media screen and (min-width: 1200px) {
-    .nav-component:not(.header > .nav-component) {
+    .nav-component:not(.header > .nav-component),
+    .errorPageMessage:not(.header > .errorPageMessage) {
       display: none;
       height: 100vh;
     }
@@ -40,7 +45,7 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <GLOBAL_STYLE>
-        <Router />
+        <App />
       </GLOBAL_STYLE>
     </RecoilRoot>
   </React.StrictMode>

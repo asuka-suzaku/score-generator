@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { StylesAtom } from "../../../Store/StylesAtom";
 import { CreateElement } from "../Function/Create/CreateTable";
-import { FileToCsv } from "../Function/FileToCsv";
-import React, { useEffect } from "react";
-import { DomToSvg } from "../Function/DomToSvg";
-import { CssLike } from "../Function/Calculation/CssLike";
-import { StyleSheetManager } from "styled-components";
-import isPropValid from "@emotion/is-prop-valid";
+import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import GeneratorErrorPage from "../../Error/GeneratorErrorPage";
 
 export default function Preview() {
   //背景画像の設定
@@ -23,6 +19,13 @@ export default function Preview() {
   //使用言語の設定
   let styleLang = styles?.fonts?.useLanguage;
 
+  let elementMove = 0;
+  const imgElement = document.getElementById("bgImg");
+  if (imgElement) {
+    const elementHeight = imgElement.getBoundingClientRect().height;
+    elementMove = elementHeight / 2;
+  }
+
   let lang;
 
   if (styleLang) {
@@ -35,6 +38,23 @@ export default function Preview() {
     }
   }
 
+  const fontData = styles.fonts.fontFamily.split(",");
+  const fontName = fontData[0].replace(/\s/g, "+");
+
+  const removeElem = document.getElementById("temporaryFont");
+  if (removeElem) {
+    document.head.removeChild(removeElem);
+  }
+
+  const fontLink = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`;
+  const link = document.createElement("link");
+  link.href = fontLink;
+  link.rel = "stylesheet";
+  link.id = "temporaryFont";
+  document.head.appendChild(link);
+
+  const css_family = `"${fontData[0]}",${fontData[1]}`;
+
   const them = {
     fontColor: styles.fonts.fontColor,
     fontSize: styles.fonts.fontSize,
@@ -43,50 +63,54 @@ export default function Preview() {
     imageURL: image,
     borderColor: styles.decoration.borderColor,
     borderSize: styles.decoration.borderSize,
+    font_Family: css_family,
+    font_Weight: fontData[2],
   };
 
   let title = styles?.fileConfig?.matchTitle
     ? styles.fileConfig.matchTitle
     : "タイトル";
 
-  // console.log(styles.fileConfig.contentWidth);
+  const calcMove =
+    styles.fileConfig.contentHight / 2 - elementMove
+      ? styles.fileConfig.contentHight / 2 - elementMove
+      : 0;
 
   return (
     <>
-      <CONTENT_STYLE id="CreateImg">
+      <CONTENT_STYLE
+        className="test"
+        $bgColor={styles.decoration.bgColor}
+        id="CreateImg"
+        $calcMove={calcMove}
+      >
         {them.imageURL ? (
           <img
             src={`${them.imageURL}`}
             crossorigin="anonymous"
             className="bg-img"
+            id="bgImg"
           />
         ) : (
           ""
         )}
 
-        {/* <BG $img={`url(${them.imageURL})`}> */}
         <IS_STYLE className="main-table" $stylesData={them}>
-          <div className="content-wrap">
-            <TITLE_STYLE>
-              <p>{title}</p>
-            </TITLE_STYLE>
-            <TABLE_STYLE>
-              <CreateElement />
-            </TABLE_STYLE>
+          <div className="content-wrap" id="mainElement">
+            <ErrorBoundary FallbackComponent={GeneratorErrorPage}>
+              <TITLE_STYLE>
+                <p>{title}</p>
+              </TITLE_STYLE>
+              <TABLE_STYLE>
+                <CreateElement />
+              </TABLE_STYLE>
+            </ErrorBoundary>
           </div>
         </IS_STYLE>
-        {/* </BG> */}
       </CONTENT_STYLE>
     </>
   );
 }
-
-const BG = styled.div`
-  background-image: ${(props) => props.$img};
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-`;
 
 const IS_STYLE = styled.div`
   color: ${(props) => props.$stylesData.fontColor};
@@ -96,9 +120,16 @@ const IS_STYLE = styled.div`
   justify-content: center;
   align-items: center;
 
+  p {
+    font-family: ${(props) => props.$stylesData.font_Family};
+    font-weight: ${(props) => props.$stylesData.font_Weight};
+  }
+
   th,
   td {
     font-size: ${(props) => props.$stylesData.fontSize}px;
+    font-family: ${(props) => props.$stylesData.font_Family};
+    font-weight: ${(props) => props.$stylesData.font_Weight};
   }
 
   th,
@@ -112,16 +143,15 @@ const CONTENT_STYLE = styled.div`
   display: flex;
   justify-content: center;
   white-space: nowrap;
-  background-color: #fff;
+  background-color: ${(props) => props.$bgColor};
   position: relative;
-
   .main-table {
     z-index: 3;
   }
 
   .bg-img {
     position: absolute;
-    top: 0;
+    top: ${(props) => props.$calcMove}px;
     left: 0;
     width: 100%;
   }

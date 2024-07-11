@@ -7,7 +7,12 @@ export default function Download() {
     <>
       <DOWNLOAD_STYLE>
         <DOWNLOAD_MSG>指定ファイルをダウンロードしてください</DOWNLOAD_MSG>
-        <BUTTON>ダウンロード</BUTTON>
+        <BUTTON
+          download="SCORE-GENERATOR-FILE"
+          href="/csv/SCORE GENERATOR.xlsx"
+        >
+          ダウンロード
+        </BUTTON>
       </DOWNLOAD_STYLE>
     </>
   );

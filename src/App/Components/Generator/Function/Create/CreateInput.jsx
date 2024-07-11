@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { DataAtom, StylesAtom } from "../../../../Store/StylesAtom";
 import { INPUT_STYLE } from "../../Elements/Setting";
 import { GetIrregularPointValue } from "../GetIrregularPointValue";

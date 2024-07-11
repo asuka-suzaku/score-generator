@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { BUTTON } from "../../../Style/Common/Button";
 import { styled } from "styled-components";
 import * as common from "../../../Style/Common/Common";
+import { Outlet } from "react-router-dom";
 
 export default function GoToGenerator() {
   return (
     <>
       <GENERATE_CONTENT>
         <p>ジェネレートしに行く</p>
-        <GOTO_LINK>GENERATOR</GOTO_LINK>
+        <GOTO_LINK to="/generator">GENERATOR</GOTO_LINK>
       </GENERATE_CONTENT>
     </>
   );
@@ -26,7 +27,11 @@ const GOTO_LINK = styled(Link)`
   padding: 1em 6.5em;
   border-radius: 13em;
   margin: 2em 0;
+  margin-bottom: 0;
   text-decoration: none;
+  :hover {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 500px) {
     padding: 1em 3em;

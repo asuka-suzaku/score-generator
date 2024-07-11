@@ -1,6 +1,3 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { DataAtom, StylesAtom } from "../../../Store/StylesAtom";
-
 export function GetIrregularPointValue(data, setData) {
   const elemSum = data.fileConfig?.howLong;
   let dataArray = [];

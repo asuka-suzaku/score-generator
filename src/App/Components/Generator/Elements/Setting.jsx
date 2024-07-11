@@ -9,6 +9,9 @@ import {
 import * as common from "../../../Style/Common/Common";
 import { CreateInput } from "../Function/Create/CreateInput";
 import { Validation, GetSheet } from "../Function/GetSheet";
+import { FontsJaAtom } from "../../../Store/StylesAtom";
+import GetFontsJa from "../Function/GetFont";
+import { useEffect } from "react";
 
 export default function Setting() {
   const {
@@ -19,13 +22,47 @@ export default function Setting() {
 
   const [sheetData, setSheetData] = useRecoilState(SheetDataAtom);
 
+  const [fonts, setFonts] = useRecoilState(FontsJaAtom);
   //recoil
 
   const [styles, setStyles] = useRecoilState(StylesAtom);
 
   const HandleAtom = (data) => setStyles(data);
 
-  // console.log(styles.fileConfig.howLong)
+  useEffect(() => {
+    const element = document.getElementById("mainElement");
+    if (element) {
+      const elementStyle = element.getBoundingClientRect();
+
+      if (elementStyle.width > styles.fileConfig.contentWidth) {
+        const wArea = document.getElementById("recommendWidth");
+        const wArea1 = document.getElementById("recommendWidth1");
+        wArea1.textContent = "要素が画像サイズを超えています";
+        wArea.textContent = `推奨画像サイズは${Math.ceil(
+          elementStyle.width
+        )}px以上です`;
+      } else {
+        const wArea = document.getElementById("recommendWidth");
+        const wArea1 = document.getElementById("recommendWidth1");
+        wArea.textContent = "";
+        wArea1.textContent = "";
+      }
+      if (elementStyle.height > styles.fileConfig.contentHight) {
+        const hArea = document.getElementById("recommendHeight");
+        const hArea1 = document.getElementById("recommendHeight1");
+        hArea1.textContent = "要素が画像サイズを超えています";
+        hArea.textContent = `要素が画像サイズを超えています推奨画像サイズは${Math.ceil(
+          elementStyle.height
+        )}px以上です`;
+      } else {
+        const hArea = document.getElementById("recommendHeight");
+        const hArea1 = document.getElementById("recommendHeight1");
+        hArea.textContent = "";
+        hArea1.textContent = "";
+      }
+    }
+  }, [styles, sheetData]);
+
   return (
     <>
       <FORM_STYLE onChange={handleSubmit(HandleAtom)}>
@@ -33,7 +70,6 @@ export default function Setting() {
           <div className="form-flex">
             <div className="input-kinds">
               <TITLE_STYLE>
-                <img src="/img/icon_ex.png" alt="" />
                 <p>ファイル設定</p>
               </TITLE_STYLE>
               <INPUT_STYLE>
@@ -50,20 +86,7 @@ export default function Setting() {
                 </select>
               </INPUT_STYLE>
 
-              {styles.fileConfig.choiceFile === "useFile" ? (
-                <INPUT_STYLE>
-                  <label className="label" htmlFor="file">
-                    ファイルの選択
-                  </label>
-                  <input
-                    id="file"
-                    name="file"
-                    type="file"
-                    accept=".csv"
-                    {...register("fileConfig.file")}
-                  />
-                </INPUT_STYLE>
-              ) : (
+              {styles.fileConfig.choiceFile === "useUrl" ? (
                 <div>
                   <INPUT_STYLE>
                     <label className="label" htmlFor="url">
@@ -86,6 +109,19 @@ export default function Setting() {
                     <div className="errorMsg" id="errorUrl"></div>
                   </INPUT_STYLE>
                 </div>
+              ) : (
+                <INPUT_STYLE>
+                  <label className="label" htmlFor="file">
+                    ファイルの選択
+                  </label>
+                  <input
+                    id="file"
+                    name="file"
+                    type="file"
+                    accept=".csv"
+                    {...register("fileConfig.file")}
+                  />
+                </INPUT_STYLE>
               )}
               <INPUT_STYLE>
                 <label className="label" htmlFor="matchTitle">
@@ -140,52 +176,56 @@ export default function Setting() {
                   </option>
                 </select>
               </INPUT_STYLE>
-              <INPUT_STYLE>
-                <label className="label" htmlFor="killPoint">
-                  規則的な順位ポイント
-                </label>
-                <input
-                  type="number"
-                  id="regularRankPoint"
-                  name="regularRankPoint"
-                  {...register("fileConfig.regularRankPoint", {
-                    validate: (data) => {
-                      if (data < 0) {
-                        return "0以上に設定してください";
-                      }
-                    },
-                  })}
-                />
-                <div className="errorMsg">
-                  {errors.fileConfig?.regularRankPoint?.message}
-                </div>
-              </INPUT_STYLE>
-              <div>
+              {styles.fileConfig.rankPoint === "useRegularRankPoint" ? (
                 <INPUT_STYLE>
-                  <label className="label" htmlFor="howLong">
-                    何位まで指定しますか
+                  <label className="label" htmlFor="killPoint">
+                    規則的な順位ポイント
                   </label>
                   <input
                     type="number"
-                    name="howLong"
-                    id="howLong"
-                    {...register("fileConfig.howLong", {
+                    id="regularRankPoint"
+                    name="regularRankPoint"
+                    {...register("fileConfig.regularRankPoint", {
                       validate: (data) => {
                         if (data < 0) {
-                          return "1以上にしてください";
+                          return "0以上に設定してください";
                         }
                       },
                     })}
                   />
                   <div className="errorMsg">
-                    {errors.fileConfig?.howLong?.message}
+                    {errors.fileConfig?.regularRankPoint?.message}
                   </div>
                 </INPUT_STYLE>
+              ) : (
+                <div>
+                  <INPUT_STYLE>
+                    <label className="label" htmlFor="howLong">
+                      何位まで指定しますか
+                    </label>
+                    <input
+                      type="number"
+                      name="howLong"
+                      id="howLong"
+                      {...register("fileConfig.howLong", {
+                        validate: (data) => {
+                          if (data < 0) {
+                            return "1以上にしてください";
+                          }
+                        },
+                      })}
+                    />
+                    <div className="errorMsg">
+                      {errors.fileConfig?.howLong?.message}
+                    </div>
+                  </INPUT_STYLE>
 
-                <div id="inputIrregular">
-                  <CreateInput />
+                  <div id="inputIrregular">
+                    <CreateInput />
+                  </div>
                 </div>
-              </div>
+              )}
+
               <INPUT_STYLE>
                 <label className="label" htmlFor="contentWidth">
                   出力する画像の横幅
@@ -204,6 +244,10 @@ export default function Setting() {
                 />
                 <div className="errorMsg">
                   {errors.fileConfig?.contentWidth?.message}
+                </div>
+                <div className="errorMsg">
+                  <p id="recommendWidth1"></p>
+                  <p id="recommendWidth"></p>
                 </div>
               </INPUT_STYLE>
               <INPUT_STYLE>
@@ -225,12 +269,15 @@ export default function Setting() {
                 <div className="errorMsg">
                   {errors.fileConfig?.contentHight?.message}
                 </div>
+                <div className="errorMsg">
+                  <p id="recommendHeight1"></p>
+                  <p id="recommendHeight"></p>
+                </div>
               </INPUT_STYLE>
             </div>
 
             <div className="input-kinds">
               <TITLE_STYLE>
-                <img src="/img/icon_ex.png" alt="" />
                 <p>テキスト設定</p>
               </TITLE_STYLE>
               <INPUT_STYLE>
@@ -242,10 +289,17 @@ export default function Setting() {
                   id="fontFamily"
                   {...register("fonts.fontFamily")}
                 >
-                  <option value="noto">noto</option>
-                  <option value="hiragino">hiragino</option>
-                  <option value="M PLUS">M PLUS</option>
+                  <option value=""></option>
+                  <CreateOption fontDataArray={fonts} />
                 </select>
+              </INPUT_STYLE>
+              <INPUT_STYLE>
+                <button
+                  type="button"
+                  onClick={() => GetFontsJa(setFonts, fonts)}
+                >
+                  フォントを探す
+                </button>
               </INPUT_STYLE>
               <INPUT_STYLE>
                 <label className="label" htmlFor="fontColor">
@@ -296,7 +350,6 @@ export default function Setting() {
 
           <div className="input-kinds">
             <TITLE_STYLE>
-              <img src="/img/icon_ex.png" alt="" />
               <p>その他設定</p>
             </TITLE_STYLE>
             <INPUT_STYLE>
@@ -342,6 +395,17 @@ export default function Setting() {
                 {...register("decoration.bgImg")}
               />
             </INPUT_STYLE>
+            <INPUT_STYLE>
+              <label className="label" htmlFor="bgColor">
+                背景色
+              </label>
+              <input
+                type="color"
+                name="bgColor"
+                id="bgColor"
+                {...register("decoration.bgColor")}
+              />
+            </INPUT_STYLE>
           </div>
         </div>
       </FORM_STYLE>
@@ -349,17 +413,30 @@ export default function Setting() {
   );
 }
 
+function CreateOption({ fontDataArray, register }) {
+  return (
+    <>
+      {fontDataArray.map((kindsDataArray, index1) =>
+        kindsDataArray.map((fontData, index2) => (
+          <option key={`${index1}-${index2}`} value={fontData}>
+            {`${fontData[0]},${fontData[1]},${fontData[2]}`}
+          </option>
+        ))
+      )}
+    </>
+  );
+}
+
 const TITLE_STYLE = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 1em;
-  img {
-    width: 1em;
-    height: 1em;
+  margin: 2em 0;
+  font-weight: ${common.BOLD_FONT_WIGHT};
+  @media screen and (max-width: 500px) {
+    font-weight: 700;
   }
 `;
 
 export const INPUT_STYLE = styled.div`
+  font-size: ${common.MAIN_FONT_SIZE}px;
   margin: 1em 0;
   input {
     margin-left: 0.5em;
@@ -367,7 +444,9 @@ export const INPUT_STYLE = styled.div`
   }
 
   select {
-    height: 2em;
+    height: 1.5em;
+    width: 10em;
+    font-size: 16px;
   }
 
   .errorMsg {
@@ -423,3 +502,82 @@ const FORM_STYLE = styled.form`
 {
   /* <CreateInput /> */
 }
+
+const testA = [
+  [
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "100",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEi75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "200",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFJEj75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "300",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFE8j75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "regular",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEj75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "500",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFCMj75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "600",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFM8k75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "700",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFPYk75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "800",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFJEk75vY0rw-oME.ttf",
+    ],
+    [
+      "Noto Sans JP",
+      "sans-serif",
+      "900",
+      "https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFLgk75vY0rw-oME.ttf",
+    ],
+  ],
+  [
+    [
+      "Kiwi Maru",
+      "serif",
+      "300",
+      "https://fonts.gstatic.com/s/kiwimaru/v14/R70djykGkuuDep-hRg6gNCi0Vxn9R5ShnA.ttf",
+    ],
+    [
+      "Kiwi Maru",
+      "serif",
+      "regular",
+      "https://fonts.gstatic.com/s/kiwimaru/v14/R70YjykGkuuDep-hRg6YmACQXzLhTg.ttf",
+    ],
+    [
+      "Kiwi Maru",
+      "serif",
+      "500",
+      "https://fonts.gstatic.com/s/kiwimaru/v14/R70djykGkuuDep-hRg6gbCm0Vxn9R5ShnA.ttf",
+    ],
+  ],
+];

@@ -9,4 +9,8 @@ export const SECTION_TITLE_STYLE = styled.div`
   font-size: ${common.SECTION_TITLE_FONT_SIZE}px;
   margin: 5.5em 0;
   font-weight: ${common.BOLD_FONT_WIGHT};
+
+  h2 {
+    margin-bottom: 0.5em;
+  }
 `;

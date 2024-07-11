@@ -1,25 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import LoadingPage from "./App/Components/Load/Loading";
+import Router from "./App/Route/Router";
+import { useRecoilState } from "recoil";
+import { IsLoadingAtom } from "./App/Store/StylesAtom";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [isLoad, setLoad] = useRecoilState(IsLoadingAtom);
+  setTimeout(() => {
+    setLoad(false);
+  }, 6000);
+  return isLoad ? <LoadingPage /> : <Router />;
 }
 
 export default App;

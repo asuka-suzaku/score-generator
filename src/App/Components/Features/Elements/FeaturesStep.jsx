@@ -6,7 +6,7 @@ export default function FeaturesStep() {
     <>
       <FEATURES_SUMMARY_STYLE>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/step_ex.png" alt="" />
+          <img src="/img/feature/download.png" alt="" />
           <h4>step1</h4>
           <p>
             指定ファイルを
@@ -15,7 +15,7 @@ export default function FeaturesStep() {
           </p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/step_ex.png" alt="" />
+          <img src="/img/feature/write.png" alt="" />
           <h4>step2</h4>
           <p>
             指定ファイルに
@@ -24,12 +24,12 @@ export default function FeaturesStep() {
           </p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/step_ex.png" alt="" />
+          <img src="/img/feature/upload.png" alt="" />
           <h4>step3</h4>
           <p>ファイルをアップロード</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/step_ex.png" alt="" />
+          <img src="/img/feature/edit.png" alt="" />
           <h4>step4</h4>
           <p>デザインの設定</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>

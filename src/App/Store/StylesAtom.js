@@ -16,12 +16,14 @@ export const defaultValues = {
     contentHight: 1080,
   },
   fonts: {
-    fontFamily: "'Noto Sans JP', sans-serif",
+    fontFamily:
+      "Noto Sans JP,sans-serif,400,https://fonts.gstatic.com/s/notosansjp/v52/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFE8j75vY0rw-oME.ttf",
     fontColor: "#000",
     fontSize: 18,
     useLanguage: "useJa",
   },
   decoration: {
+    bgColor: "#fff",
     borderSize: 0,
     borderColor: "#000",
     bgImg: [],
@@ -55,3 +57,20 @@ export const MenuAtom = atom({
   key: "MenuAtom",
   default: true,
 });
+
+export const FontsJaAtom = atom({
+  key: "FontsJaAtom",
+  default: [],
+});
+
+export const ErrorAtom = atom({
+  key: "ErrorAtom",
+  default: null,
+});
+
+export const IsLoadingAtom = atom({
+  key: "IsLoadingAtom",
+  default: true,
+});
+
+export const WindowAtom = atom({ key: "Window", default: 0 });

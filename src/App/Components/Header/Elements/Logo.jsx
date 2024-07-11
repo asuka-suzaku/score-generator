@@ -1,35 +1,137 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 export default function Logo() {
+  const pathName = useLocation().pathname;
   return (
     <>
-      <LOGO_STYLE>
-        <img src="/img/logo_ex.png" alt="" />
-        <h1>SCORE GENERATOR</h1>
-      </LOGO_STYLE>
+      {pathName === "/" ? (
+        <div>
+          <AN_LOGO_STYLE
+            className="logo-img-1 logo-style"
+            href="#mainTop"
+            offset="200"
+          >
+            <img
+              className="logo"
+              height="100"
+              src="/img/logo/logo-icon-name.png"
+              alt=""
+            />
+          </AN_LOGO_STYLE>
+          <AN_LOGO_STYLE
+            className="logo-img-2 logo-style"
+            href="#mainTop"
+            offset="200"
+          >
+            <img
+              className="logo-mini"
+              height="100"
+              src="/img/logo/logo-name-mini.png"
+              alt=""
+            />
+          </AN_LOGO_STYLE>
+        </div>
+      ) : (
+        <div>
+          <LOGO_STYLE className="logo-img-2 logo-style">
+            <img
+              className="logo-mini"
+              height="100"
+              src="/img/logo/logo-name-mini.png"
+              alt=""
+            />
+          </LOGO_STYLE>
+          <LOGO_STYLE className="logo-img-1 logo-style">
+            <img
+              className="logo"
+              height="100"
+              src="/img/logo/logo-icon-name.png"
+              alt=""
+            />
+          </LOGO_STYLE>
+        </div>
+      )}
     </>
   );
 }
 
-const LOGO_STYLE = styled.div`
-  padding-left: 3em;
+const AN_LOGO_STYLE = styled(AnchorLink)`
+  margin-left: 3em;
   display: flex;
   align-items: center;
+  text-decoration: none;
+  letter-spacing: 0;
 
-  img {
-    width: 3em;
+  @media screen and (max-width: 500px) {
+    margin-left: 1em;
+
+    .logo-mini {
+      height: 1em;
+      width: auto;
+      position: relative;
+      top: 2px;
+    }
+
+    padding-left: 1em;
+  }
+
+  .logo {
+    width: auto;
     height: 3em;
   }
 
-  h1 {
-    margin-left: 0.5em;
-    font-size: 24px;
-    letter-spacing: 0;
+  @media screen and (max-width: 500px) {
+    margin-left: 1em;
+
+    .logo-mini {
+      height: 1em;
+      width: auto;
+      position: relative;
+      top: 2px;
+    }
+
+    padding-left: 1em;
   }
+`;
+
+const LOGO_STYLE = styled(Link)`
+  margin-left: 3em;
+  display: flex;
+  align-items: center;
 
   @media screen and (max-width: 500px) {
-    img {
-      display: none;
+    margin-left: 1em;
+
+    .logo-mini {
+      height: 1em;
+      width: auto;
+      position: relative;
+      top: 2px;
+    }
+
+    padding-left: 1em;
+  }
+
+  .logo {
+    width: auto;
+    height: 3em;
+  }
+
+  margin-left: 3em;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 500px) {
+    margin-left: 1em;
+
+    .logo-mini {
+      height: 1em;
+      width: auto;
+      position: relative;
+      top: 2px;
     }
 
     padding-left: 1em;
