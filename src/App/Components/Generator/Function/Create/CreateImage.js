@@ -11,7 +11,7 @@ export function CreateImage(width, hight) {
   html2canvas(element, option).then((canvas) => {
     const anchor = document.createElement("a");
     anchor.href = canvas.toDataURL("image/png");
-    anchor.download = "SCORE-BORDER-APP.png";
+    anchor.download = "SCORE-GENERATOR.png";
     anchor.click();
   });
 }

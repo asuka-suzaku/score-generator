@@ -3,17 +3,17 @@
   "name": "SCORE GENERATOR",
   "icons": [
     {
-      "src": "https://webftp-sv12801.xserver.jp/score-generator.com/public_html/img/logo/logo-32.png",
+      "src": "https://score-generator.com/public_html/img/logo/logo-32.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "https://webftp-sv12801.xserver.jp/score-generator.com/public_html/img/logo/logo-192.png",
+      "src": "https://score-generator.com/public_html/img/logo/logo-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://webftp-sv12801.xserver.jp/score-generator.com/public_html/img/logo/logo-512.png",
+      "src": "https://score-generator.com/public_html/img/logo/logo-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

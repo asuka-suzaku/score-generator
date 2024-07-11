@@ -80,7 +80,6 @@ const HEADER_STYLE = styled.header`
     box-shadow: 0 10px 10px #b9b9b9;
     border-radius: 100px;
     font-weight: ${common.BOLD_FONT_WIGHT};
-    left: 0;
     top: 0;
   }
 
