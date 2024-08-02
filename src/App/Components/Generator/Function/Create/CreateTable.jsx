@@ -43,19 +43,8 @@ export function CreateElement() {
             throw err;
         }
 
-        const temporaryArray = [];
-        for (let i = 0; i < CsvData.length; i++) {
-          const forInTemporaryArray = [];
-          for (let x = 0; x < CsvData[i].length; x++) {
-            forInTemporaryArray.push(CsvData[i][x]);
-          }
-          temporaryArray.push(forInTemporaryArray);
-        }
-
-        console.log(temporaryArray);
-
         let calcArray = [];
-        if (CsvData) {
+        if (CsvData[0]) {
           calcArray = await CalcPoint(
             CsvData,
             rankPointSystem,
@@ -65,24 +54,24 @@ export function CreateElement() {
             useLanguage,
             setError
           );
+
+          let finalArray = [];
+          switch (useLanguage) {
+            case "useJa":
+              finalArray = await PushHeaderJa(calcArray);
+              break;
+            case "useEn":
+              finalArray = await PushHeaderEn(calcArray);
+              break;
+            default:
+              const err = new Error("言語が選択されていません。");
+              throw err;
+          }
+
+          const completedArray = await CheckKillPoint(finalArray, killPoint);
+
+          setResult(completedArray);
         }
-
-        let finalArray = [];
-        switch (useLanguage) {
-          case "useJa":
-            finalArray = await PushHeaderJa(calcArray);
-            break;
-          case "useEn":
-            finalArray = await PushHeaderEn(calcArray);
-            break;
-          default:
-            const err = new Error("言語が選択されていません。");
-            throw err;
-        }
-
-        const completedArray = await CheckKillPoint(finalArray, killPoint);
-
-        setResult(completedArray);
       }
     };
     calc();
@@ -100,7 +89,11 @@ export function CreateElement() {
     );
   } else {
     return (
-      <p id="message">ファイルのアップロードかurlを貼り付けてください。</p>
+      <p id="message">
+        ファイルのアップロードか
+        <br className="message-span" />
+        urlを貼り付けてください。
+      </p>
     );
   }
 }

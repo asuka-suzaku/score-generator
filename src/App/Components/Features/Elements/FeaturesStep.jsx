@@ -6,32 +6,24 @@ export default function FeaturesStep() {
     <>
       <FEATURES_SUMMARY_STYLE>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/feature/download.png" alt="" />
-          <h4>step1</h4>
-          <p>
-            指定ファイルを
-            <br />
-            ダウンロード
-          </p>
+          <img src="/img/feature/free.png" alt="" />
+          <h4>POINT 1</h4>
+          <p>誰でも無料</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/feature/write.png" alt="" />
-          <h4>step2</h4>
-          <p>
-            指定ファイルに
-            <br />
-            ポイントを入力
-          </p>
+          <img src="/img/feature/create2.png" alt="" />
+          <h4>POINT 2</h4>
+          <p>簡単画像作成</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/feature/upload.png" alt="" />
-          <h4>step3</h4>
-          <p>ファイルをアップロード</p>
+          <img src="/img/feature/rule.png" alt="" />
+          <h4>POINT 3</h4>
+          <p>さまざまなルールに対応</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
         <FEATURES_SUMMARY_STYLE_CONTENT>
-          <img src="/img/feature/edit.png" alt="" />
-          <h4>step4</h4>
-          <p>デザインの設定</p>
+          <img src="/img/feature/member.png" alt="" />
+          <h4>POINT 4</h4>
+          <p>大人数の大会にも対応</p>
         </FEATURES_SUMMARY_STYLE_CONTENT>
       </FEATURES_SUMMARY_STYLE>
     </>
@@ -42,6 +34,7 @@ const FEATURES_SUMMARY_STYLE = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 3em;
+  margin-bottom: 4em;
   @media screen and (max-width: 1200px) {
     justify-content: center;
     flex-direction: column;
@@ -69,6 +62,7 @@ const FEATURES_SUMMARY_STYLE_CONTENT = styled.div`
   h4 {
     margin: 18px 0;
     font-weight: ${common.BOLD_FONT_WIGHT};
+    font-size: ${common.SECTION_TITLE_FONT_SIZE}px;
   }
 
   @media screen and (max-width: 1200px) {
@@ -78,5 +72,10 @@ const FEATURES_SUMMARY_STYLE_CONTENT = styled.div`
 
   @media screen and (max-width: 800px) {
     margin: 3em 0;
+  }
+  @media screen and (max-width: 500px) {
+    h4 {
+      font-weight: 700;
+    }
   }
 `;

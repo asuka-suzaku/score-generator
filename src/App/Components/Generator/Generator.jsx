@@ -12,18 +12,16 @@ import * as common from "../../Style/Common/Common";
 import { CreateImage } from "./Function/Create/CreateImage";
 import Navigation from "../Header/Elements/Navigation";
 import Footer from "../Footer/Footer";
-import ScrollToTop from "../../Route/ScrollToTop";
 import { useEffect } from "react";
 import ErrorPage from "../Error/ErrorPage";
 import { ErrorBoundary } from "react-error-boundary";
-import HeaderErrorPage from "../Error/HeaderErrorPage";
-import GeneratorErrorPage from "../Error/GeneratorErrorPage";
 import { useState } from "react";
 import TermOfUse from "../TermOfUse/TermOfUse";
 
 export default function Generator() {
   const [consent, setConsent] = useState(false);
   const [styles, setStyles] = useRecoilState(StylesAtom);
+
   const width = styles.fileConfig.contentWidth
     ? styles.fileConfig.contentWidth
     : "1920";
@@ -85,14 +83,24 @@ export default function Generator() {
         $toggle={toggle}
       >
         <div className="preview">
-          <ErrorBoundary FallbackComponent={ErrorPage}>
-            <Preview />
-          </ErrorBoundary>
+          <div className="qqq">
+            <ErrorBoundary FallbackComponent={ErrorPage}>
+              <Preview />
+            </ErrorBoundary>
+          </div>
         </div>
         <div className="setting pre">
           <ErrorBoundary FallbackComponent={ErrorPage}>
             <Setting />
           </ErrorBoundary>
+        </div>
+
+        <div className="message pre">
+          <p>
+            変更した設定がすぐに変更されない場合がございます。
+            <br />
+            その際は設定の何かしらを変更することで解決する場合がございます。
+          </p>
         </div>
 
         {toggle === "block" ? (
@@ -105,21 +113,18 @@ export default function Generator() {
           </div>
         )}
 
-        <div className="consent-button pre">
-          <div className="consent-service pre">
+        <div className="consent-button">
+          <div className="consent-service">
             <TermOfUse />
           </div>
-          <div className="consent-input pre">
+          <div className="consent-input">
             <input
-              className="pre"
               id="consent"
               name="consent"
               type="checkbox"
               onClick={handleConsent}
             />
-            <label className="pre" htmlFor="consent">
-              同意する
-            </label>
+            <label htmlFor="consent">同意する</label>
           </div>
         </div>
 
@@ -127,13 +132,13 @@ export default function Generator() {
           {consent ? (
             <EXPORT
               type="button"
-              className="after-consent"
+              className="after-consent pre"
               onClick={() => CreateImage(width, hight)}
             >
               出力
             </EXPORT>
           ) : (
-            <p className="un-content-button">出力</p>
+            <p className="un-content-button pre">出力</p>
           )}
         </div>
       </GENERATOR_STYLE>
@@ -173,20 +178,45 @@ const GENERATOR_STYLE = styled.main`
     }
   }
   z-index: 2;
-  .pre {
-    display: ${(props) => props.$toggle};
+
+  .message {
+    color: ${common.HIGHT_LIGHT_COLOR};
+    margin: 2em;
   }
 
   .view:hover {
     cursor: pointer;
   }
+
+  .view:hover {
+    cursor: pointer;
+    animation-name: d_button;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  @keyframes d_button {
+    0% {
+      background-color: ${common.SUB_COLOR};
+    }
+
+    100% {
+      background-color: #acbebe;
+    }
+  }
   .view {
-    padding: 1em 6.5em;
+    color: ${common.FONT_COLOR};
+    font-size: ${common.MAIN_FONT_SIZE}px;
+    font-weight: ${common.BOLD_FONT_WIGHT};
+    padding: 1em 5.5em;
     border-radius: 13em;
     margin: 2em 0;
-    background-color: ${common.HIGHT_LIGHT_COLOR};
-    color: ${common.MAIN_COLOR};
-    @media screen and (max-width: 500px) {
+    margin-top: 1em;
+    text-decoration: none;
+
+    border: 5px solid #acbebe;
+    @media screen and (max-width: 600px) {
+      font-weight: 700;
       padding: 1em 3em;
     }
   }
@@ -194,7 +224,7 @@ const GENERATOR_STYLE = styled.main`
   .consent-button {
     width: 70%;
     height: 20em;
-    display: flex;
+    display: ${(props) => (props.$toggle === "block" ? "flex" : "none")};
     flex-direction: column;
     align-items: center;
   }
@@ -248,11 +278,12 @@ const GENERATOR_STYLE = styled.main`
   }
 
   .preview {
+    height: ${(props) => (props.$toggle === "block" ? "80vh" : "85vh")};
+    width: ${(props) => (props.$toggle === "block" ? "90vw" : "100vw")};
+    /* width: 100vw; */
+    overflow: scroll;
     display: grid;
     place-content: center;
-    overflow: scroll;
-    width: ${(props) => (props.$toggle === "block" ? "90vw" : "100vw")};
-    height: ${(props) => (props.$toggle === "block" ? "80vh" : "85vh")};
   }
 
   @media screen and (max-width: 1200px) {
@@ -266,5 +297,9 @@ const GENERATOR_STYLE = styled.main`
     .view {
       padding: 1em 3em;
     }
+  }
+
+  .pre {
+    display: ${(props) => props.$toggle} !important;
   }
 `;

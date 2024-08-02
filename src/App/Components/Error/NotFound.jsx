@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import * as common from "../../Style/Common/Common";
+import { useRecoilState } from "recoil";
+import { MenuAtom } from "../../Store/StylesAtom";
+import { useEffect } from "react";
+import Navigation from "../Header/Elements/Navigation";
 
 export default function NotFound() {
+  const [menu, setMenu] = useRecoilState(MenuAtom);
+  useEffect(() => {
+    setMenu(true);
+  }, []);
   return (
     <>
+      <Navigation menu={menu} />
       <STYLE>
         <div className="not-found">
           <div className="not-found-error-text">

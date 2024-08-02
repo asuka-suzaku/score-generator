@@ -31,7 +31,7 @@ export default function InPageLink() {
               {pathName === "/" ? (
                 <ANCHOR_STYLE
                   className="animation-footer"
-                  offset="300"
+                  offset="150"
                   href="#appFeatures"
                 >
                   特徴

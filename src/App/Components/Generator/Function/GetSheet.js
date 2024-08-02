@@ -21,7 +21,9 @@ export function GetSheet(setSheetData) {
           .get(
             `https://sheets.googleapis.com/v4/spreadsheets/${id}/values/A1:Y110?key=${API_KEY}`
           )
-          .then((res) => setSheetData(res.data.values))
+          .then((res) => {
+            setSheetData(res.data.values);
+          })
           .catch((e) => {
             throw new Error(e);
           });

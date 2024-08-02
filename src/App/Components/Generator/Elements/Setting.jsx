@@ -74,7 +74,7 @@ export default function Setting() {
               </TITLE_STYLE>
               <INPUT_STYLE>
                 <label className="label" htmlFor="choiceFile">
-                  ファイル
+                  ファイルタイプ
                 </label>
                 <select
                   name="choiceFile"

@@ -9,6 +9,7 @@ import HowToUseSetting from "./Elements/HowToUseSetting";
 import CanUsePlace from "./Elements/CanUsePlace";
 import ExampleImageLook from "./Elements/ExampleImageLook";
 import Attention from "./Elements/Attention";
+import ExplanationOfName from "./Elements/ExplanationOfName";
 
 export default function HowTo() {
   const [menu, setMenu] = useRecoilState(MenuAtom);
@@ -21,8 +22,8 @@ export default function HowTo() {
       <Navigation menu={menu} />
       <HOW_TO_STYLE id="howToTop">
         <div className="content-width">
+          <ExplanationOfName />
           <HowToUseSheet />
-          <ExampleImageLook />
           <HowToUseSetting />
           <CanUsePlace />
           <Attention />
@@ -47,7 +48,7 @@ const HOW_TO_STYLE = styled.main`
     margin-top: 6em;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .attention {

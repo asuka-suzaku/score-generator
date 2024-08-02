@@ -34,7 +34,7 @@ export default function Navigation({ menu }) {
               {pathName === "/" ? (
                 <ANCHOR_LINK_STYLE
                   className="nav-btn"
-                  offset="300"
+                  offset="150"
                   href="#appFeatures"
                 >
                   <p>特徴</p>
@@ -83,7 +83,7 @@ export default function Navigation({ menu }) {
               )}
             </li>
             <li className="none">
-              <ANCHOR_LINK_STYLE id="test" offset="300" href="#appFeatures" />
+              <ANCHOR_LINK_STYLE id="test" offset="150" href="#appFeatures" />
               <LINK_STYLE to="/" id="test2" />
             </li>
           </ul>

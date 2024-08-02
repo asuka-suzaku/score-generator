@@ -1,16 +1,143 @@
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { StylesAtom } from "../../../Store/StylesAtom";
+import { StylesAtom, ToggleAtom } from "../../../Store/StylesAtom";
 import { CreateElement } from "../Function/Create/CreateTable";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import GeneratorErrorPage from "../../Error/GeneratorErrorPage";
 
 export default function Preview() {
   //背景画像の設定
   const [styles, setStyles] = useRecoilState(StylesAtom);
+  const [topDifference, setTopDifference] = useState(0);
+  const [leftDifference, setLeftDifference] = useState(0);
+  const [toggle, setToggle] = useRecoilState(ToggleAtom);
+  const [screenHeight, setScreenHeight] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    const h_body = window.innerHeight;
+    const w_body = window.innerWidth;
+    setScreenHeight(h_body);
+    setScreenWidth(w_body);
+  }, [styles, toggle]);
+
   let image;
   const file = styles?.decoration?.bgImg[0];
+
+  useEffect(() => {
+    const tableElement = document.getElementById("mainElement");
+    if (tableElement) {
+      const tem_body_h = window.innerHeight;
+      const tem_body_w = window.innerWidth;
+
+      if (tem_body_h !== screenHeight) {
+        setScreenHeight(tem_body_h);
+      }
+
+      if (tem_body_w !== screenWidth) {
+        setScreenWidth(tem_body_w);
+      }
+
+      const tableElementStyle = tableElement.getBoundingClientRect();
+
+      switch (toggle) {
+        case "block":
+          if (tableElementStyle.height > screenHeight * 0.8) {
+            const topDif =
+              tableElementStyle.height / 2 - (screenHeight * 0.8) / 2;
+
+            let add = 0;
+
+            if (styles.fileConfig.contentHight > tableElementStyle.height) {
+              add =
+                (styles.fileConfig.contentHight - tableElementStyle.height) / 2;
+            }
+
+            if (topDif > 0) {
+              setTopDifference(topDif + add);
+            }
+          } else {
+            const topDif =
+              (styles.fileConfig.contentHight - screenHeight * 0.8) / 2;
+            setTopDifference(topDif);
+          }
+
+          if (tableElementStyle.width > screenWidth * 0.9) {
+            const leftDif =
+              tableElementStyle.width / 2 - (screenWidth * 0.9) / 2;
+
+            let add = 0;
+
+            if (styles.fileConfig.contentWidth > tableElementStyle.width) {
+              add =
+                (styles.fileConfig.contentWidth - tableElementStyle.width) / 2;
+            }
+
+            if (leftDif > 0) {
+              setLeftDifference(leftDif + add);
+            }
+          } else {
+            const leftDif =
+              (styles.fileConfig.contentWidth - screenWidth * 0.9) / 2;
+            if (leftDif > 0) {
+              setLeftDifference(leftDif);
+            }
+          }
+
+          break;
+        case "none":
+          if (tableElementStyle.height > screenHeight) {
+            const topDif =
+              tableElementStyle.height / 2 - (screenHeight * 0.85) / 2;
+
+            let add = 0;
+
+            if (styles.fileConfig.contentHight > tableElementStyle.height) {
+              add =
+                (styles.fileConfig.contentHight - tableElementStyle.height) / 2;
+            }
+
+            if (topDif > 0) {
+              setTopDifference(topDif + add);
+            }
+          } else {
+            const topDif =
+              (styles.fileConfig.contentHight - screenHeight * 0.85) / 2;
+
+            if (topDif > 0) {
+              setTopDifference(topDif);
+            }
+          }
+
+          if (tableElementStyle.width > screenWidth) {
+            const leftDif = tableElementStyle.width / 2 - screenWidth / 2;
+
+            let add = 0;
+
+            if (styles.fileConfig.contentWidth > tableElementStyle.width) {
+              add =
+                (styles.fileConfig.contentWidth - tableElementStyle.width) / 2;
+            }
+
+            if (leftDif > 0) {
+              setLeftDifference(leftDif + add);
+            }
+          } else {
+            const leftDif = (styles.fileConfig.contentWidth - screenWidth) / 2;
+            if (leftDif > 0) {
+              setLeftDifference(leftDif);
+            }
+          }
+          break;
+      }
+    }
+  }, [styles, toggle]);
+
+  useEffect(() => {
+    setLeftDifference(0);
+    setTopDifference(0);
+  }, []);
 
   if (file) {
     image = window.URL.createObjectURL(file);
@@ -83,6 +210,9 @@ export default function Preview() {
         $bgColor={styles.decoration.bgColor}
         id="CreateImg"
         $calcMove={calcMove}
+        $topDif={topDifference}
+        $leftDif={leftDifference}
+        $contentW={screenWidth}
       >
         {them.imageURL ? (
           <img
@@ -98,10 +228,10 @@ export default function Preview() {
         <IS_STYLE className="main-table" $stylesData={them}>
           <div className="content-wrap" id="mainElement">
             <ErrorBoundary FallbackComponent={GeneratorErrorPage}>
-              <TITLE_STYLE>
+              <TITLE_STYLE $fontSize={them.fontSize}>
                 <p>{title}</p>
               </TITLE_STYLE>
-              <TABLE_STYLE>
+              <TABLE_STYLE $fontSize={them.fontSize}>
                 <CreateElement />
               </TABLE_STYLE>
             </ErrorBoundary>
@@ -138,13 +268,16 @@ const IS_STYLE = styled.div`
       ${(props) => props.$stylesData.borderSize}px;
   }
 `;
-
 const CONTENT_STYLE = styled.div`
+  position: relative;
+  top: ${(props) => props.$topDif}px;
+  left: ${(props) => props.$leftDif}px;
   display: flex;
   justify-content: center;
   white-space: nowrap;
   background-color: ${(props) => props.$bgColor};
   position: relative;
+  width: fit-content;
   .main-table {
     z-index: 3;
   }
@@ -158,7 +291,7 @@ const CONTENT_STYLE = styled.div`
 `;
 
 const TITLE_STYLE = styled.div`
-  font-size: 3em;
+  font-size: ${(props) => props.$fontSize * 3}px;
   margin: 2em;
   display: flex;
   justify-content: center;
@@ -166,17 +299,32 @@ const TITLE_STYLE = styled.div`
 `;
 
 const TABLE_STYLE = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   z-index: 30;
+
   th,
   td {
     padding: 1em 2em;
     text-align: center;
-    font-size: 18px;
   }
 
   #mark {
     text-align: center;
+    font-size: ${(props) => props.$fontSize}px;
     margin-top: 3em;
+    margin-bottom: 3em;
+  }
+
+  .message-span {
+    display: none;
+  }
+
+  @media screen and (max-width: 500px) {
+    .message-span {
+      display: block;
+    }
   }
 `;

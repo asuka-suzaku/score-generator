@@ -43,6 +43,11 @@ export const DataAtom = atom({
   default: [],
 });
 
+export const DemoDataAtom = atom({
+  key: "DemoDataAtom",
+  default: [],
+});
+
 export const SheetDataAtom = atom({
   key: "SheetDataAtom",
   default: [],
@@ -74,3 +79,9 @@ export const IsLoadingAtom = atom({
 });
 
 export const WindowAtom = atom({ key: "Window", default: 0 });
+
+export const DemoAtom = atom({
+  key: "DemoAtom",
+  default: defaultValues,
+  dangerouslyAllowMutability: true,
+});

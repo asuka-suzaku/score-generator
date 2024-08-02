@@ -13,7 +13,7 @@ export default function Features() {
       </SECTION_TITLE_STYLE>
       <FEATURES_STYLE>
         <div className="ad-message">
-          <p>簡単4ステップ</p>
+          <p>4つのポイント</p>
         </div>
         <FeaturesStep />
         <Download />
@@ -37,10 +37,16 @@ const FEATURES_STYLE = styled.div`
 
   //ipad
   @media screen and (max-width: 1200px) {
-    margin: 0 10%;
+    margin: 0 2em;
   }
 
   @media screen and (max-width: 800px) {
-    margin: 0 5%;
+    margin: 0 2em;
+  }
+
+  @media screen and (max-width: 500px) {
+    .ad-message {
+      font-weight: 700;
+    }
   }
 `;

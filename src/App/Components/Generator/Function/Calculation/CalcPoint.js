@@ -52,7 +52,6 @@ export async function CalcPoint(
   await CalcSort(CSV_DATA);
 
   await CheckNaN(CSV_DATA, setError);
-
   switch (useLanguage) {
     case "useJa":
       PushRankJa(CSV_DATA);

@@ -1,10 +1,13 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { ToggleAtom } from "../../Store/StylesAtom";
 import * as common from "../../Style/Common/Common";
 
 export default function TermOfUse() {
+  const toggle = useRecoilValue(ToggleAtom);
   return (
     <>
-      <STYLE id="termOfUseTop">
+      <STYLE $toggle={toggle} id="termOfUseTop">
         <h3 className="rule-title">利用規約</h3>
         <div className="site-rule">
           <div className="site-rule-section">
@@ -178,7 +181,7 @@ export default function TermOfUse() {
 }
 
 const STYLE = styled.div`
-  display: flex;
+  display: ${(props) => (props.$toggle === "block" ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
 

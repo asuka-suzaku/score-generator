@@ -13,4 +13,8 @@ export const SECTION_TITLE_STYLE = styled.div`
   h2 {
     margin-bottom: 0.5em;
   }
+
+  @media screen and (max-width: 500px) {
+    font-weight: 700;
+  }
 `;

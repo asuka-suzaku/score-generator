@@ -1,22 +1,24 @@
 import styled from "styled-components";
 import * as common from "../../Style/Common/Common";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import { useRecoilValue } from "recoil";
-import { WindowAtom } from "../../Store/StylesAtom";
 import "@splidejs/react-splide/css";
 
 export default function MainVisual() {
-  const Window = useRecoilValue(WindowAtom);
-  const width = Window ? Window : 0;
   return (
     <>
       <MAIN_VISUAL_STYLE>
         <div className="main-vis-content">
+          <div className="top-title">
+            <p className="top-subtitle">Everyone join hosting.</p>
+            <p className="top-message">
+              無料で<span>大会に合わせた</span>
+              <br className="break-message" />
+              スコアシートを作成できます。
+            </p>
+          </div>
           <Splide
             options={{
               direction: "ltr",
-              width: 500,
-              width: `${width < 1200 ? "100%" : "60%"}`,
               start: 0,
               perPage: 1,
               gap: "1em",
@@ -27,27 +29,41 @@ export default function MainVisual() {
               rewind: true,
               speed: 500,
               rewindSpeed: 500,
-              padding: { left: "4vw", right: "4vw" },
               lazyLoad: false,
               cover: false,
             }}
           >
             <SplideSlide>
               <img width="100" src="/img/sample/sample-space.png" />
+              <img
+                className="shadow"
+                width="100"
+                height="30"
+                src="/img/sample/shadow.png"
+                alt=""
+              />
             </SplideSlide>
             <SplideSlide>
               <img width="100" src="/img/sample/sample-elegant.png" />
+              <img
+                className="shadow"
+                width="100"
+                height="30"
+                src="/img/sample/shadow.png"
+                alt=""
+              />
             </SplideSlide>
             <SplideSlide>
               <img width="100" src="/img/sample/sample-pop.png" />
+              <img
+                className="shadow"
+                width="100"
+                height="30"
+                src="/img/sample/shadow.png"
+                alt=""
+              />
             </SplideSlide>
           </Splide>
-          <div className="top-logo">
-            <p className="top-logo-name">
-              <span>S</span>CORE <span>G</span>ENERATOR
-            </p>
-            <p className="top-logo-name-subtitle">Everyone join hosting.</p>
-          </div>
         </div>
       </MAIN_VISUAL_STYLE>
     </>
@@ -57,10 +73,11 @@ export default function MainVisual() {
 const MAIN_VISUAL_STYLE = styled.section`
   display: flex;
   justify-content: center;
-  margin-top: 3em;
+  margin-top: 9em;
 
   .main-vis-content {
-    height: 70vh;
+    /* height: 70vh; */
+    padding: 5em 0;
     width: calc(100vw - 200px);
     max-width: 1720px;
     display: flex;
@@ -68,27 +85,48 @@ const MAIN_VISUAL_STYLE = styled.section`
     justify-content: space-around;
   }
 
-  .top-logo {
+  .top-title {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     letter-spacing: 0;
     line-height: 1.8em;
-    white-space: nowrap;
+    margin-right: 2em;
+    /* white-space: nowrap; */
   }
 
-  .top-logo-name {
-    font-size: 32px;
-  }
-
-  .top-logo-name span {
+  .top-title span {
     color: ${common.HIGHT_LIGHT_COLOR};
   }
 
-  .top-logo-name-subtitle {
+  .top-subtitle {
+    font-size: 32px;
+  }
+
+  .top-message {
     font-size: 24px;
+    margin-top: 1em;
+  }
+
+  .break-message {
+    display: none;
+  }
+
+  @media screen and (max-width: 1430px) {
+    .break-message {
+      display: block;
+    }
+  }
+
+  .shadow {
+    margin-top: 1em;
+  }
+
+  .splide {
+    height: calc(fit-content + 2em);
+    width: 50%;
   }
 
   .splide__track {
@@ -110,9 +148,10 @@ const MAIN_VISUAL_STYLE = styled.section`
     transition: all 0.7s 0s ease;
   }
 
-  /* .splide__pagination--ttb {
-    bottom: -1em !important;
-  } */
+  .splide__arrow {
+    top: 45%;
+  }
+
   .splide__pagination button {
     background-color: #c88487;
     width: 10px;
@@ -131,9 +170,12 @@ const MAIN_VISUAL_STYLE = styled.section`
 
   .splide__slide {
     flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
   }
 
-  @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 1100px) {
+    margin-top: 1em;
     .main-vis-content {
       height: fit-content;
       flex-direction: column;
@@ -141,14 +183,19 @@ const MAIN_VISUAL_STYLE = styled.section`
       align-items: center;
       width: calc(100vw - 100px);
     }
+    .top-title {
+      margin: 3em 2em;
+      line-height: 2em;
+    }
 
-    .top-logo-name {
-      margin-top: 3em;
+    .splide {
+      width: 90%;
     }
   }
-
   @media screen and (max-width: 600px) {
+    margin-top: 0;
     .main-vis-content {
+      padding-top: 1em;
       width: 100vw;
     }
   }

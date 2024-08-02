@@ -15,7 +15,6 @@ export default function AtomToArray(data) {
       }
     }
 
-    console.log(temporaryArray);
     resolve(temporaryArray);
   });
 }
